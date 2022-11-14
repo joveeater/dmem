@@ -17,9 +17,9 @@ def startup(state):
 	dolphinbp.createManagedBp(0x800b002c, lambda s : s['eventLog'].append("Loaded restore"), state);
 	dolphinbp.createManagedBp(0x801fea8c, lambda s : s['eventLog'].append(s['memscan'].readString(s['dolphin']['reg']['gpr'][5])+" allocated "+str(s['dolphin']['reg']['gpr'][3])+" bytes"), state);
 
-	state['window'].addWindow(cwindows.SimpleWindow(278,0, 39, 80, lambda x : list(reversed(x['eventLog']))))
+	state['window'].addWindow(cwindows.SimpleWindow(-42,0, -1, -1, lambda x : list(reversed(x['eventLog']))))
 
-	state['window'].addWindow(cwindows.FormattedTableWindow(0,0, 65, 80, lambda x : memoryscan.ifConnected(x, eternaldarkness.readActorList),[
+	state['window'].addWindow(cwindows.FormattedTableWindow(0,0, 65, -1, lambda x : memoryscan.ifConnected(x, eternaldarkness.readActorList),[
 		{"header": "id", "key": "uid", "width":4},
 		{"header": "addr", "key": "addr", "width":10, "filter":lambda v : format(v, 'x')},
 		{"header": "geom", "key": "geom", "width":6},

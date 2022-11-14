@@ -64,6 +64,30 @@ class StackSubwindow():
 		self.y=y
 		self.height=height
 		self.width=width
+		
+		if(self.x<0):
+			self.x=curses.COLS+self.x
+
+		if(self.y<0):
+			self.y=curses.LINES+self.y
+
+		if(self.height<0):
+			self.height=curses.LINES-self.y+self.height-1
+
+		if(self.width<0):
+			self.width=curses.COLS-self.x+self.width-1
+
+		if(self.x>curses.COLS):
+			self.x=curses.COLS-3
+			
+		if(self.y>curses.LINES):
+			self.y=curses.LINES-3
+			
+		if(self.x+self.width>curses.COLS):
+			self.width=curses.COLS-self.x-2
+			
+		if(self.y+self.height>curses.LINES):
+			self.height=curses.LINES-self.y-2
 
 		self.vScroll=0
 		self.hScroll=0
