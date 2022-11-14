@@ -25,6 +25,10 @@ class CursesStack:
 		
 	def update(self, state):
 		self.fullwin.erase()
+		curses.update_lines_cols()
+		if(self.lines!=curses.LINES or self.cols!=curses.COLS):
+			for sub in self.sub_windows:
+				sub.resize()
 		i=0;
 		while(i<len(self.sub_windows)):
 			self.sub_windows[(self.current_window+1+i) %len(self.sub_windows)].update(state)
@@ -60,10 +64,22 @@ class CursesStack:
 
 class StackSubwindow():
 	def __init__(self, x, y, width, height):
-		self.x=x
-		self.y=y
-		self.height=height
-		self.width=width
+		self.bx=x
+		self.by=y
+		self.bheight=height
+		self.bwidth=width
+
+		self.vScroll=0
+		self.hScroll=0
+		self.content=[]
+		self.active=False
+		self.resize()
+
+	def resize(self):
+		self.x=self.bx
+		self.y=self.by
+		self.height=self.bheight
+		self.width=self.bwidth
 		
 		if(self.x<0):
 			self.x=curses.COLS+self.x
@@ -88,11 +104,6 @@ class StackSubwindow():
 			
 		if(self.y+self.height>curses.LINES):
 			self.height=curses.LINES-self.y-2
-
-		self.vScroll=0
-		self.hScroll=0
-		self.content=[]
-		self.active=False
 
 	def update(self, state):
 
