@@ -10,7 +10,7 @@ import memoryscan
 import eternaldarkness
 import startup
 
-stateMessageR=re.compile("^STATE: (\w+)\s+(\d+)(\s+0x([a-fA-F0-9]+)\s+([a-fA-F0-9]+))?")
+stateMessageR=re.compile("^STATE: (\w+)\s+(\d+)(\s+0?x?([a-fA-F0-9]+)\s+([a-fA-F0-9]+))?")
 
 def handleStateMessage(message, state):
 	m=stateMessageR.match(message)
