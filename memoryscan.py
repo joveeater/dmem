@@ -76,14 +76,14 @@ class MemoryScanner:
 		def read(self, offset, size):
 			buf = (c_char*size)()
 			s = c_size_t()
-			if(k32.ReadProcessMemory(self.handle, offset, cast(byref(buf),c_void_p), size, byref(s))):
+			if(k32.ReadProcessMemory(self.handle, c_void_p(self.base-self.gamecube_base+offset), cast(byref(buf),c_void_p), size, byref(s))):
 				return buf
 			else:
 				raise OSError("Could not read other process")
 
 		def write(self, offset, size, data):
 			s = c_size_t()
-			if(k32.WriteProcessMemory(self.handle, offset, cast(byref(data),c_void_p), size, byref(s))):
+			if(k32.WriteProcessMemory(self.handle, c_void_p(self.base-self.gamecube_base+offset), cast(byref(data),c_void_p), size, byref(s))):
 				return True
 			else:
 				raise OSError("Could not write to other process")
