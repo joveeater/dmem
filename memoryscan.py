@@ -23,6 +23,7 @@ elif('win32' in sys.platform):
 	k32.ReadProcessMemory.restype = BOOL
 	k32.WriteProcessMemory.argtypes = HANDLE,LPVOID,LPVOID,c_size_t,POINTER(c_size_t)
 	k32.WriteProcessMemory.restype = BOOL
+	k32.GetLastError.restype = DWORD
 
 else:
 	raise Exception("System not supported")
@@ -36,7 +37,7 @@ class MemoryScanner:
 		
 		self.gamecube_base=0x80000000
 		if('win32' in sys.platform):
-			self.handle = k32.OpenProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION, 0, self.pid)
+			self.handle = k32.OpenProcess(PROCESS_QUERY_INFORMATION |PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION, 0, self.pid)
 
 
 	if('linux' in sys.platform):
@@ -79,7 +80,7 @@ class MemoryScanner:
 			if(k32.ReadProcessMemory(self.handle, c_void_p(self.base-self.gamecube_base+offset), cast(byref(buf),c_void_p), size, byref(s))):
 				return buf
 			else:
-				raise OSError("Could not read other process")
+				raise OSError("Could not read other process "+k32.GetLastError())
 
 		def write(self, offset, size, data):
 			s = c_size_t()

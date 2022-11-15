@@ -29,7 +29,7 @@ def handleStateMessage(message, state):
 					  "pid":int(m.group(2), 10),
 					  "mem":{"base": int(base, 16), "size":int(size, 16)}}
 
-	if(state["dolphin"]["mem"]["base"]!=None and (state["memscan"].pid!=state["dolphin"]["pid"] or state["memscan"].base!=state["dolphin"]["mem"]["base"])):
+	if(state["dolphin"]["mem"]["base"]!=-1 and (state["memscan"].pid!=state["dolphin"]["pid"] or state["memscan"].base!=state["dolphin"]["mem"]["base"])):
 		state["memscan"]=memoryscan.MemoryScanner(state["dolphin"]["pid"], state["dolphin"]["mem"]["base"],state["dolphin"]["mem"]["size"])
 
 regMessageR=re.compile("^REG: "+("([a-fA-F0-9]+)\s+"*98)+"$")
